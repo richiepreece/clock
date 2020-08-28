@@ -48,8 +48,8 @@ function BarContainer (props) {
       {...props}
       ref={mesh2}
     >
-      <cylinderBufferGeometry attach="geometry" args={[0.16, 0.16, currHeight, 6]} />
-      <meshPhongMaterial attach="material" color={'white'} roughness={0.1} metalness={0.0} reflectivity={1.0} transparent opacity={0.5} />
+      <cylinderBufferGeometry attach="geometry" args={[0.149, 0.149, currHeight, 6]} />
+      <meshPhongMaterial attach="material" color={new THREE.Color('#94f4fe')} />
     </mesh>
     }
     </>
