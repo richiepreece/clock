@@ -1,13 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import { Canvas } from 'react-three-fiber';
 import * as serviceWorker from './serviceWorker';
 
+import Clock from './app/Clock';
+
+import './index.scss';
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Canvas>
+    <ambientLight />
+    <pointLight position={[-10, 0, 10]} />
+
+    <Clock position={[0, 0, 0]} />
+  </Canvas>,
   document.getElementById('root')
 );
 
