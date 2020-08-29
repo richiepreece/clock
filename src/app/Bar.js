@@ -15,15 +15,17 @@ function Bar (props) {
   const height = 1.5;
 
   useFrame(() => {
-    let rotate = (degreesPerMillisecondPerMinute * Time.millisecondsThisMinute) % 360;
+    const rotate = (degreesPerMillisecondPerMinute * Time.millisecondsThisMinute) % 360;
     mesh.current.rotation.y = THREE.MathUtils.degToRad(rotate);
 
     if(props.time) {
+      //Crystal should slowly drain over an hour
       mesh2.current.rotation.y = THREE.MathUtils.degToRad(rotate);
-      let missingHeight = (height - 0.02) * (Time.millisecondsThisHour / Time.millisecondsPerHour);
+      const missingHeight = (height - 0.02) * (Time.millisecondsThisHour / Time.millisecondsPerHour);
 
-      let intendedHeight = height - missingHeight - 0.02;
+      const intendedHeight = height - missingHeight - 0.02;
       if(currHeight < intendedHeight) {
+        // If crystal should be more full than it is, fill it up with each frame
         setCurrHeight(currHeight + 0.01);
       } else {
         setCurrHeight(height - missingHeight - 0.02);
@@ -39,7 +41,17 @@ function Bar (props) {
       position={[0, 2, 0]}
     >
       <cylinderBufferGeometry attach="geometry" args={[0.15, 0.15, 1.5, 6]} />
-      <meshPhongMaterial attach="material" color={props.time ? new THREE.Color('#6096ff') : new THREE.Color('#1e4985')} roughness={0.1} metalness={0.0} reflectivity={1.0} transparent opacity={0.5} refractionRatio={0.7} />
+      <meshPhysicalMaterial
+        attach="material"
+        color={props.time ? new THREE.Color('#6096ff') : new THREE.Color('#1e4985')}
+        roughness={0.1}
+        metalness={0.0}
+        reflectivity={1.0}
+        transparent
+        opacity={0.5}
+        refractionRatio={0.9}
+        clearcoat
+        transmission={0.4} />
     </mesh>
     {props.time &&
       <mesh

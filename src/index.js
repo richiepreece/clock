@@ -10,7 +10,7 @@ import './index.scss';
 ReactDOM.render(
   <Canvas>
     <ambientLight />
-    <pointLight position={[-10, 0, 10]} />
+    <pointLight position={[-7, 0, 7]} />
 
     <Clock />
   </Canvas>,

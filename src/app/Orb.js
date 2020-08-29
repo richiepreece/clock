@@ -8,6 +8,6 @@ export default (props) => {
     {...props}
     ref={mesh}
   >
-    <pointLight {...props} />
+    {/* TODO */}
   </mesh>);
 }
