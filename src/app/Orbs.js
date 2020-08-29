@@ -1,19 +1,18 @@
 import React, { useRef } from 'react';
 import { useFrame } from 'react-three-fiber';
 import * as THREE from 'three';
-import moment from 'moment';
 import Orb from './Orb';
+
+import Time from './time/Time';
 
 export default (props) => {
   const mesh = useRef();
 
   const degrees = 360;
-  const millisecondsPerMinute = 60 * 1000;
-  const degreesPerMillisecondPerMinute = degrees / millisecondsPerMinute;
+  const degreesPerMillisecondPerMinute = degrees / Time.millisecondsPerMinute;
 
   useFrame(() => {
-    let millisecondsThisMinute = moment().seconds() * 1000 + moment().milliseconds();
-    let degrees = degreesPerMillisecondPerMinute * -millisecondsThisMinute;
+    let degrees = degreesPerMillisecondPerMinute * -Time.millisecondsThisMinute;
 
     mesh.current.rotation.y = THREE.MathUtils.degToRad(degrees);
   })

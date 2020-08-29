@@ -12,7 +12,7 @@ ReactDOM.render(
     <ambientLight />
     <pointLight position={[-10, 0, 10]} />
 
-    <Clock position={[0, 0, 0]} />
+    <Clock />
   </Canvas>,
   document.getElementById('root')
 );

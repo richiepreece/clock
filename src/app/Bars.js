@@ -1,21 +1,20 @@
 import React, { useRef } from 'react';
 import { useFrame } from 'react-three-fiber';
 import * as THREE from 'three';
-import moment from 'moment';
 
 import Bar from './Bar';
+import Time from './time/Time';
 
-export default (props) => {
+function BarsContainer(props) {
   const mesh = useRef();
-
-  const degrees = 360;
-  const millisecondsPerMinute = 60 * 1000;
-  const degreesPerMillisecondPerMinute = degrees / millisecondsPerMinute;
+  const hours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const degreesPerMillisecondPerMinute = 360 / Time.millisecondsPerMinute;
 
   useFrame(() => {
-    let millisecondsThisMinute = moment().seconds() * 1000 + moment().milliseconds();
-    let rotateDegrees = degreesPerMillisecondPerMinute * -millisecondsThisMinute;
-
+    // We want the entire clock to rotate round its axis once per minute.
+    // This will rotates the correct number of degrees for the number of
+    // milliseconds so far this hour
+    const rotateDegrees = degreesPerMillisecondPerMinute * -Time.millisecondsThisMinute;
     mesh.current.rotation.y = THREE.MathUtils.degToRad(rotateDegrees);
   });
 
@@ -24,20 +23,26 @@ export default (props) => {
     {...props}
     ref={mesh}
   >
-    {/* <circleBufferGeometry attach="geometry" args={[3.5, 100]} />
-    <meshPhongMaterial attach="material" color={new THREE.Color('#1e4985')} roughness={0.1} metalness={0.0} reflectivity={1.0} transparent opacity={0.5} /> */}
+    {/* One crystal per hour. Only hour 0 keeps track of time */}
+    {hours.map(hour => <Bar key={hour} oclock={hour} time={hour === 0} />)}
+  </mesh>);
+}
 
-    <Bar oclock={0} />
-    <Bar oclock={1} />
-    <Bar oclock={2} />
-    <Bar oclock={3} />
-    <Bar oclock={4} />
-    <Bar oclock={5} />
-    <Bar oclock={6} />
-    <Bar oclock={7} />
-    <Bar oclock={8} />
-    <Bar oclock={9} />
-    <Bar oclock={10} />
-    <Bar oclock={11} />
+export default props => {
+  const mesh = useRef();
+
+  useFrame(() => {
+    // Rotate the clock 30 degrees per hour to point the timekeeping
+    // crystal towards the current hour
+    const hourBaseRotate = 30 * -Time.zeroBasedHour;
+    mesh.current.rotation.z = THREE.MathUtils.degToRad(hourBaseRotate);
+  });
+
+  return (
+    <mesh
+    {...props}
+    ref={mesh}
+  >
+    <BarsContainer />
   </mesh>);
 }
