@@ -3,7 +3,7 @@ import { useFrame } from 'react-three-fiber';
 import * as THREE from 'three';
 import moment from 'moment';
 
-function BarContainer (props) {
+function Bar (props) {
   const [currHour, setCurrHour] = useState(false);
   const [currHeight, setCurrHeight] = useState(1.5);
 
@@ -41,7 +41,7 @@ function BarContainer (props) {
       ref={mesh}
     >
       <cylinderBufferGeometry attach="geometry" args={[0.15, 0.15, 1.5, 6]} />
-      <meshPhongMaterial attach="material" color={new THREE.Color('#1e4985')} roughness={0.1} metalness={0.0} reflectivity={1.0} transparent opacity={0.5} />
+      <meshPhongMaterial attach="material" color={currHour ? new THREE.Color('#6096ff') : new THREE.Color('#1e4985')} roughness={0.1} metalness={0.0} reflectivity={1.0} transparent opacity={0.5} refractionRatio={0.7} />
     </mesh>
     {currHour &&
     <mesh
@@ -53,6 +53,25 @@ function BarContainer (props) {
     </mesh>
     }
     </>
+  )
+}
+
+function BarContainer (props) {
+  // This reference will give us direct access to the mesh
+  const mesh = useRef();
+
+  useFrame(() => {
+    mesh.current.position.y = 2;
+  })
+
+  return (
+    <mesh
+      {...props}
+      ref={mesh}
+      position={[0, 2, 0]}
+    >
+      <Bar full={props.full} oclock={props.oclock} />
+    </mesh>
   )
 }
 
@@ -68,7 +87,7 @@ export default (props) => {
       ref={mesh}
       rotation={[0, 0, THREE.MathUtils.degToRad(hourBaseRotate)]}
     >
-      <BarContainer full={props.full} oclock={props.oclock} />
+      <BarContainer {...props} />
     </mesh>
   )
 }

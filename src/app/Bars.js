@@ -14,10 +14,10 @@ export default (props) => {
 
   useFrame(() => {
     let millisecondsThisMinute = moment().seconds() * 1000 + moment().milliseconds();
-    let degrees = degreesPerMillisecondPerMinute * -millisecondsThisMinute;
+    let rotateDegrees = degreesPerMillisecondPerMinute * -millisecondsThisMinute;
 
-    mesh.current.rotation.y = THREE.MathUtils.degToRad(degrees);
-  })
+    mesh.current.rotation.y = THREE.MathUtils.degToRad(rotateDegrees);
+  });
 
   return (
     <mesh
@@ -27,17 +27,17 @@ export default (props) => {
     {/* <circleBufferGeometry attach="geometry" args={[3.5, 100]} />
     <meshPhongMaterial attach="material" color={new THREE.Color('#1e4985')} roughness={0.1} metalness={0.0} reflectivity={1.0} transparent opacity={0.5} /> */}
 
-    <Bar position={[1, 2, 0]} oclock={1} />
-    <Bar position={[2, 1, 0]} oclock={2} />
-    <Bar position={[2.2, 0, 0]} oclock={3} />
-    <Bar position={[2, -1, 0]} oclock={4} />
-    <Bar position={[1, -2, 0]} oclock={5} />
-    <Bar position={[0, -2.2, 0]} oclock={6} />
-    <Bar position={[-1, -2, 0]} oclock={7} />
-    <Bar position={[-2, -1, 0]} oclock={8} />
-    <Bar position={[-2.2, 0, 0]} oclock={9} />
-    <Bar position={[-2, 1, 0]} oclock={10} />
-    <Bar position={[-1, 2, 0]} oclock={11} />
-    <Bar position={[0, 2.2, 0]} oclock={0} />
+    <Bar oclock={0} />
+    <Bar oclock={1} />
+    <Bar oclock={2} />
+    <Bar oclock={3} />
+    <Bar oclock={4} />
+    <Bar oclock={5} />
+    <Bar oclock={6} />
+    <Bar oclock={7} />
+    <Bar oclock={8} />
+    <Bar oclock={9} />
+    <Bar oclock={10} />
+    <Bar oclock={11} />
   </mesh>);
 }
