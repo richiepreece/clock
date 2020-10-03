@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 class Time {
   get millisecondsPerSecond() {
@@ -14,19 +14,19 @@ class Time {
   }
 
   get millisecondsThisSecond() {
-    return moment().milliseconds();
+    return dayjs().millisecond();
   }
 
   get millisecondsThisMinute() {
-    return moment().seconds() * 1000 + this.millisecondsThisSecond;
+    return dayjs().second() * 1000 + this.millisecondsThisSecond;
   }
 
   get millisecondsThisHour() {
-    return moment().minutes() * 60 * 1000 + this.millisecondsThisMinute;
+    return dayjs().minute() * 60 * 1000 + this.millisecondsThisMinute;
   }
 
   get zeroBasedHour() {
-    return moment().hour() % 12;
+    return dayjs().hour() % 12;
   }
 }
 
