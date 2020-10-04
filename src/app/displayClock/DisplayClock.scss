@@ -1,0 +1,28 @@
+.display-clock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.25);
+  font-size: xx-large;
+  font-family: sans-serif;
+  padding: 30px 20px;
+
+  .right {
+    display: flex;
+    flex-direction: row;
+
+    .dst {
+      margin-right: 20px;
+      width: 22px;
+
+      img {
+        height: 60%;
+        opacity: 0.25;
+      }
+    }
+  }
+}

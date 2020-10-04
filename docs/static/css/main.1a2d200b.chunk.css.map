@@ -1,1 +1,0 @@
-{"version":3,"sources":["index.scss"],"names":[],"mappings":"AAAA,UACE,UAAW,CACX,WAAY,CACZ,SAAU,CACV,QAAS,CAJX,sBAOI,UAAW,CACX,WAAY,CACZ,wBAAyB","file":"main.1a2d200b.chunk.css","sourcesContent":["html, body {\n  width: 100%;\n  height: 100%;\n  padding: 0;\n  margin: 0;\n\n  #root {\n    width: 100%;\n    height: 100%;\n    background-color: #382f50;\n  }\n}"]}

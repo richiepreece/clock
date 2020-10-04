@@ -1,4 +1,7 @@
 import dayjs from 'dayjs';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
+
+dayjs.extend(localizedFormat)
 
 class Time {
   get millisecondsPerSecond() {
@@ -27,6 +30,10 @@ class Time {
 
   get zeroBasedHour() {
     return dayjs().hour() % 12;
+  }
+
+  get dayjs () {
+    return dayjs;
   }
 }
 
