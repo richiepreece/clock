@@ -12,7 +12,7 @@
     "react-dom": "^16.14.0",
     "react-scripts": "4.0.1",
     "react-three-fiber": "^5.0.6",
-    "three": "^0.124.0"
+    "three": "^0.125.1"
   },
   "scripts": {
     "start": "react-scripts start",
