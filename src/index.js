@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import Clock from './app/Clock';
 
 import './index.scss';
-import DisplayClock from './app/displayClock/DisplayClock';
+import DisplayClock from './app/displayClock/displayClock';
 
 ReactDOM.render(
   <>
