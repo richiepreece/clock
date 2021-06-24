@@ -22,7 +22,10 @@
     "deploy": "npm run build && rm -rf docs/ && cp -pr build docs && echo clock.richiepreece.com >> docs/CNAME"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
