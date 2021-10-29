@@ -12,7 +12,7 @@
     "react-scripts": "4.0.3",
     "react-three-fiber": "^6.0.13",
     "sass": "^1.43.4",
-    "three": "^0.133.1"
+    "three": "^0.134.0"
   },
   "scripts": {
     "start": "react-scripts start",
