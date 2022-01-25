@@ -1,5 +1,6 @@
 ## WECLOME
-Clock is based on the PS2 system clock. 
+
+Clock is based on the PS2 system clock.
 
 [Clock Rules found here](https://gamicus.gamepedia.com/PlayStation_2_internal_display_clock)
 
@@ -8,14 +9,16 @@ Clock is based on the PS2 system clock.
 ## [URL TO CLOCK](https://clock.richiepreece.com)
 
 ## TO RUN
+
 ```
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 ## TO UPDATE STATIC WEBSITE
+
 ```
-npm run deploy
+yarn deploy
 git add docs/*
 git commit ...
 ```
