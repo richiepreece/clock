@@ -5,7 +5,7 @@ Clock is based on the PS2 system clock.
 
 [Video of clock found here](https://www.youtube.com/watch?v=4jIkqhmbUm4)
 
-## [URL TO CLOCK](clock.richiepreece.com)
+## [URL TO CLOCK](https://clock.richiepreece.com)
 
 ## TO RUN
 ```
