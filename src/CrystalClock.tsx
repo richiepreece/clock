@@ -555,7 +555,7 @@ function ClockGroup() {
     const m = now.getMinutes();
     const s = now.getSeconds();
     const rawFill = 1.0 - (m * 60 + s) / 3600;
-    return { h, fillLevel: 0.15 + rawFill * 0.85 };
+    return { h, fillLevel: rawFill };
   });
 
   useFrame(() => {
@@ -589,7 +589,7 @@ function ClockGroup() {
 
     // Update rod highlighting and fill level reactively
     const rawFill = 1.0 - (m * 60 + s) / 3600;
-    const fill = 0.15 + rawFill * 0.85;
+    const fill = rawFill;
     setClockState(prev => {
       if (prev.h !== h || Math.abs(prev.fillLevel - fill) > 0.01) {
         return { h, fillLevel: fill };
