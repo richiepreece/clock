@@ -89,10 +89,11 @@ function WormholeTunnel() {
       void main() {
         vec2 uv = vUv - 0.5;
         float aspect = uResolution.x / uResolution.y;
-        uv.x *= aspect;
 
-        // Distance from center — this creates the tunnel perspective
+        // Distance from center — computed before aspect correction for circular shape
         float dist = length(uv);
+
+        uv.x *= aspect;
 
         // Tunnel depth: map radial distance to Z depth
         // Closer to center = farther away in the tunnel
