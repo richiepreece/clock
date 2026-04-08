@@ -554,8 +554,10 @@ function ClockGroup() {
     const h = now.getHours() % 12;
     const m = now.getMinutes();
     const s = now.getSeconds();
-    const rawFill = 1.0 - (m * 60 + s) / 3600;
-    return { h, fillLevel: rawFill };
+    const totalSecondsInHour = m * 60 + s;
+    const rawFill = 1.0 - totalSecondsInHour / 3600;
+    const fillInRamp = Math.min(totalSecondsInHour / 5.0, 1.0);
+    return { h, fillLevel: rawFill * fillInRamp };
   });
 
   useFrame(() => {
@@ -588,8 +590,12 @@ function ClockGroup() {
     }
 
     // Update rod highlighting and fill level reactively
-    const rawFill = 1.0 - (m * 60 + s) / 3600;
-    const fill = rawFill;
+    const totalSecondsInHour = m * 60 + exactSeconds;
+    const rawFill = 1.0 - totalSecondsInHour / 3600;
+    // At the top of the hour, fill up over 5 seconds instead of snapping to full
+    const fillInDuration = 5.0;
+    const fillInRamp = Math.min(totalSecondsInHour / fillInDuration, 1.0);
+    const fill = rawFill * fillInRamp;
     setClockState(prev => {
       if (prev.h !== h || Math.abs(prev.fillLevel - fill) > 0.01) {
         return { h, fillLevel: fill };
