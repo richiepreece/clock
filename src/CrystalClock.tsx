@@ -11,6 +11,8 @@ const ORB_COUNT = 7;
 
 /**
  * LCD grouping for the PS2 clock orbs.
+ * Returns the number of visible orb groups based on the lowest common
+ * denominator of 60 that divides evenly into the current second.
  */
 function getOrbGroupCount(seconds: number): number {
   if (seconds % 60 === 0) return 1;
@@ -20,6 +22,25 @@ function getOrbGroupCount(seconds: number): number {
   if (seconds % 12 === 0) return 5;
   if (seconds % 10 === 0) return 6;
   return 7;
+}
+
+/**
+ * Find the nearest grouping second and the distance to it.
+ * Grouping seconds are: 0,10,12,15,20,24,30,36,40,45,48,50,60
+ */
+const GROUPING_SECONDS = [0, 10, 12, 15, 20, 24, 30, 36, 40, 45, 48, 50, 60];
+
+function nearestGroupingDistance(exactSecond: number): { nearest: number; dist: number; groupCount: number } {
+  let bestDist = 60;
+  let bestSec = 0;
+  for (const gs of GROUPING_SECONDS) {
+    const d = Math.abs(exactSecond - gs);
+    if (d < bestDist) {
+      bestDist = d;
+      bestSec = gs;
+    }
+  }
+  return { nearest: bestSec % 60, dist: bestDist, groupCount: getOrbGroupCount(bestSec % 60) };
 }
 
 /**
@@ -240,39 +261,53 @@ function Orbs() {
     )
   );
 
+  // Each orb has unique orbital parameters for visual variety
   const orbParams = useMemo(() =>
     Array.from({ length: ORB_COUNT }, (_, i) => ({
-      thetaSpeed: 2.0 + i * 0.08,       // very slight speed variation between orbs
-      phiSpeed: 0.3 + i * 0.02,         // very slow, gentle vertical drift
-      phiAmplitude: 0.15 + (i % 3) * 0.05, // subtle wobble only
-      phiOffset: (i / ORB_COUNT) * Math.PI * 2,
+      thetaSpeed: 2.0 + i * 0.08,
       thetaOffset: (i / ORB_COUNT) * Math.PI * 2,
     })),
   []);
 
-  // Pre-create trail materials with decreasing opacity/size
   const trailScales = useMemo(() =>
     Array.from({ length: TRAIL_LENGTH }, (_, i) => {
       const t = i / TRAIL_LENGTH;
       return {
-        scale: 0.6 * (1.0 - t * 0.8),   // starts small, fades smaller
-        opacity: 0.25 * Math.pow(1.0 - t, 2), // fades very quickly
-        emissive: 0.8 * Math.pow(1.0 - t, 2), // dim quickly
+        scale: 0.6 * (1.0 - t * 0.8),
+        opacity: 0.25 * Math.pow(1.0 - t, 2),
+        emissive: 0.8 * Math.pow(1.0 - t, 2),
       };
     }),
   []);
 
   const frameCount = useRef(0);
 
-  useFrame(({ clock }, delta) => {
+  useFrame(() => {
     const now = new Date();
+    const h = now.getHours() % 12;
+    const m = now.getMinutes();
     const s = now.getSeconds();
     const ms = now.getMilliseconds();
-    const m = now.getMinutes();
-    const t = clock.getElapsedTime();
 
+    // Wall-clock time drives everything — deterministic on refresh
+    const exactSecond = s + ms / 1000;
+    const totalSeconds = h * 3600 + m * 60 + exactSecond;
+    const t = totalSeconds;
+
+    // Orbit radius expands throughout the hour
     const minuteProgress = (m * 60 + s + ms / 1000) / 3600;
     const orbitRadius = 0.2 + minuteProgress * 0.5;
+
+    // Hour-hand angle (analog clock: 12 o'clock = top = -π/2)
+    const hourAngle = ((h + m / 60) / 12) * Math.PI * 2 - Math.PI / 2;
+
+    // LCD grouping: find nearest grouping second and blend strength
+    const { groupCount, dist: groupDist } = nearestGroupingDistance(exactSecond);
+    // Smoothly ramp grouping strength: full at 0 distance, fades over ~2 seconds
+    const groupWindow = 2.0;
+    const groupStrength = Math.max(0, 1.0 - groupDist / groupWindow);
+    // Sharpen with smoothstep for a nicer ease
+    const smoothGroupStrength = groupStrength * groupStrength * (3 - 2 * groupStrength);
 
     frameCount.current++;
     const shouldUpdateTrail = frameCount.current % 2 === 0;
@@ -283,15 +318,13 @@ function Orbs() {
 
       const params = orbParams[i];
 
-      // Pure constant-velocity orbit — no grouping forces, no lerping
-      // Each orb just circles at its own fixed speed forever
+      // --- Free-flying position (driven by wall-clock time) ---
       const theta = t * params.thetaSpeed + params.thetaOffset;
 
-      // Base circular orbit in XY plane
-      const ox = Math.cos(theta) * orbitRadius;
-      const oy = Math.sin(theta) * orbitRadius;
+      const freeX = Math.cos(theta) * orbitRadius;
+      const freeY = Math.sin(theta) * orbitRadius;
 
-      // Slowly precess the orbital plane for 3D depth
+      // 3D precession for spherical swirl
       const tiltAmount = 0.5 + Math.sin(t * 0.15 + i * 0.4) * 0.3;
       const tiltAxis = t * 0.2 + i * 0.9;
 
@@ -300,24 +333,42 @@ function Orbs() {
       const cosA = Math.cos(tiltAxis);
       const sinA = Math.sin(tiltAxis);
 
-      // Tilt around X, then rotate tilt direction around Z
-      const y1 = oy * cosT;
-      const z1 = oy * sinT;
-      const x2 = ox * cosA - y1 * sinA;
-      const y2 = ox * sinA + y1 * cosA;
+      const y1 = freeY * cosT;
+      const z1Free = freeY * sinT;
+      const x2Free = freeX * cosA - y1 * sinA;
+      const y2Free = freeX * sinA + y1 * cosA;
 
-      orb.position.set(x2, y2, z1);
+      // --- Group target position ---
+      const groupIndex = i % groupCount;
+      let groupAngle: number;
+      if (groupCount === 1) {
+        // All orbs converge to the hour-hand position
+        groupAngle = hourAngle;
+      } else {
+        // Distribute group centers evenly around the orbit
+        groupAngle = (groupIndex / groupCount) * Math.PI * 2 - Math.PI / 2;
+      }
 
-      // Shift trail history and record current position
+      // Group targets sit on the orbit circle (in XY, no tilt)
+      const groupX = Math.cos(groupAngle) * orbitRadius * 0.6;
+      const groupY = Math.sin(groupAngle) * orbitRadius * 0.6;
+      const groupZ = 0;
+
+      // Blend between free-flying and grouped positions
+      const finalX = x2Free + (groupX - x2Free) * smoothGroupStrength;
+      const finalY = y2Free + (groupY - y2Free) * smoothGroupStrength;
+      const finalZ = z1Free + (groupZ - z1Free) * smoothGroupStrength;
+
+      orb.position.set(finalX, finalY, finalZ);
+
       if (shouldUpdateTrail) {
         const history = posHistory.current[i];
         for (let j = TRAIL_LENGTH - 1; j > 0; j--) {
           history[j].copy(history[j - 1]);
         }
-        history[0].set(x2, y2, z1);
+        history[0].set(finalX, finalY, finalZ);
       }
 
-      // Update trail segment positions and appearance
       const history = posHistory.current[i];
       for (let j = 0; j < TRAIL_LENGTH; j++) {
         const trail = trailRefs.current[i * TRAIL_LENGTH + j];
