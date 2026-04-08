@@ -60,15 +60,15 @@ html, body, #app {
   bottom: 16px;
   right: 20px;
   font-size: 11px;
-  color: #8090a8;
+  color: #c0c8d8;
   text-decoration: none;
   letter-spacing: 0.5px;
   pointer-events: auto;
-  opacity: 0.6;
-  transition: opacity 0.2s;
+  animation: fork-fade 10s ease-out forwards;
 }
 
-.fork-link:hover {
-  opacity: 1;
-  color: #c0c8d8;
+@keyframes fork-fade {
+  0% { opacity: 0.6; }
+  20% { opacity: 0.6; }
+  100% { opacity: 0; }
 }

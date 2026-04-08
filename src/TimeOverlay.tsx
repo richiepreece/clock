@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 
 function getLocaleOverride(): string | undefined {
   const params = new URLSearchParams(window.location.search);
@@ -64,6 +64,16 @@ export function TimeOverlay() {
 
   const dst = isDST(now);
 
+  const forkRef = useRef<HTMLAnchorElement>(null);
+  const restartFade = useCallback(() => {
+    const el = forkRef.current;
+    if (!el) return;
+    el.style.animation = 'none';
+    // Force reflow to restart animation
+    void el.offsetHeight;
+    el.style.animation = '';
+  }, []);
+
   return (
     <div className="time-overlay">
       <div className="time-date">{formatDate(now, locale)}</div>
@@ -72,10 +82,12 @@ export function TimeOverlay() {
         {formatTime(now, locale)}
       </div>
       <a
+        ref={forkRef}
         className="fork-link"
         href="https://github.com/richiepreece/clock"
         target="_blank"
         rel="noopener noreferrer"
+        onMouseEnter={restartFade}
       >
         Fork me on GitHub
       </a>
