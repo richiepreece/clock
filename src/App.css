@@ -54,3 +54,21 @@ html, body, #app {
   opacity: 0.85;
   filter: drop-shadow(0 0 4px rgba(200, 220, 255, 0.5));
 }
+
+.fork-link {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  font-size: 11px;
+  color: #8090a8;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  pointer-events: auto;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.fork-link:hover {
+  opacity: 1;
+  color: #c0c8d8;
+}

@@ -71,6 +71,14 @@ export function TimeOverlay() {
         {dst && <SunIcon />}
         {formatTime(now, locale)}
       </div>
+      <a
+        className="fork-link"
+        href="https://github.com/richiepreece/clock"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Fork me on GitHub
+      </a>
     </div>
   );
 }
