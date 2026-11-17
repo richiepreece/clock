@@ -9,6 +9,7 @@
 # production
 /dist/
 /.parcel-cache/
+/src/import-map.json
 
 # misc
 .DS_Store

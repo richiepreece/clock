@@ -9,24 +9,30 @@ importers:
   .:
     dependencies:
       '@react-three/drei':
-        specifier: ^10.7.9
+        specifier: 10.7.9
         version: 10.7.9(@react-three/fiber@9.8.2(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(three@0.183.2))(@types/react@19.3.0)(@types/three@0.183.1)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(three@0.183.2)
       '@react-three/fiber':
-        specifier: ^9.8.2
+        specifier: 9.8.2
         version: 9.8.2(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(three@0.183.2)
       '@react-three/postprocessing':
-        specifier: ^3.2.2
+        specifier: 3.2.2
         version: 3.2.2(@react-three/fiber@9.8.2(@types/react@19.3.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(three@0.183.2))(@types/three@0.183.1)(postprocessing@6.39.0(three@0.183.2))(react@19.3.1)(three@0.183.2)
       react:
-        specifier: ^19.3.1
+        specifier: 19.3.1
         version: 19.3.1
       react-dom:
-        specifier: ^19.3.1
+        specifier: 19.3.1
         version: 19.3.1(react@19.3.1)
       three:
-        specifier: ^0.183.2
+        specifier: 0.183.2
         version: 0.183.2
     devDependencies:
+      '@parcel/config-default':
+        specifier: 2.16.4
+        version: 2.16.4(@parcel/core@2.16.4(@swc/helpers@0.5.24))(@swc/helpers@0.5.24)
+      '@parcel/transformer-raw':
+        specifier: 2.16.4
+        version: 2.16.4(@parcel/core@2.16.4(@swc/helpers@0.5.24))
       '@types/react':
         specifier: ^19.3.0
         version: 19.3.0
@@ -36,9 +42,6 @@ importers:
       '@types/three':
         specifier: ^0.183.1
         version: 0.183.1
-      buffer:
-        specifier: ^6.0.3
-        version: 6.0.3
       parcel:
         specifier: ^2.16.4
         version: 2.16.4(@swc/helpers@0.5.24)

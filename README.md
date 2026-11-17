@@ -69,6 +69,29 @@ pnpm build
 
 Outputs static files to the ignored `dist/` directory. Do not commit generated files.
 
+### Runtime dependencies and import maps
+
+`pnpm start` and `pnpm build` generate `src/import-map.json` from the runtime
+dependencies in `package.json` and their installed versions. The generated JSON
+is ignored by Git and published as a separate asset. React, React DOM, Three.js, and
+the React Three libraries load from version-pinned esm.sh URLs instead of being
+bundled into the app. Parcel still compiles the application's TypeScript, JSX,
+and CSS; its development helpers remain bundled so hot reload continues to work.
+The bootstrap fetches the JSON file at runtime, registers the map, and only then
+imports the application. During `pnpm start`, it selects matching CDN development
+builds; production keeps the map's production URLs. Dependency URLs live in the
+external JSON; Parcel may still emit a small inline map for its own chunk URLs.
+
+Update runtime dependencies with pnpm as usual; there are no import-map URLs to
+maintain manually. `pnpm generate:import-map` can also regenerate the map on its
+own. Parcel leaves runtime packages external and only bundles its development
+helpers. The generated `external` URL options keep React and
+Three.js shared between libraries; trailing-slash entries resolve package subpaths.
+
+The site requires native import-map support and access to esm.sh. This introduces
+a runtime dependency on that CDN's availability and code delivery. The pnpm
+lockfile governs local/build installs, not the CDN's transitive dependency resolution.
+
 ### Deployment
 
 Every push to `main` runs `.github/workflows/deploy-pages.yml`, which installs

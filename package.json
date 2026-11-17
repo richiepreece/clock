@@ -4,24 +4,37 @@
   "private": true,
   "packageManager": "pnpm@10.34.9",
   "source": "src/index.html",
+  "targets": {
+    "default": {
+      "context": "browser",
+      "outputFormat": "esmodule",
+      "includeNodeModules": [
+        "@parcel/error-overlay",
+        "@parcel/transformer-react-refresh-wrap",
+        "react-refresh"
+      ]
+    }
+  },
   "scripts": {
-    "start": "parcel",
-    "build": "parcel build --dist-dir dist",
-    "test": "node --experimental-strip-types --test src/clockMath.test.ts"
+    "generate:import-map": "node scripts/generate-import-map.mjs",
+    "start": "pnpm generate:import-map && parcel",
+    "build": "pnpm generate:import-map && parcel build --dist-dir dist",
+    "test": "pnpm generate:import-map && node --experimental-strip-types --test src/*.test.ts"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.9",
-    "@react-three/fiber": "^9.8.2",
-    "@react-three/postprocessing": "^3.2.2",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1",
-    "three": "^0.183.2"
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "@react-three/postprocessing": "3.2.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "three": "0.183.2"
   },
   "devDependencies": {
+    "@parcel/config-default": "2.16.4",
+    "@parcel/transformer-raw": "2.16.4",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/three": "^0.183.1",
-    "buffer": "^6.0.3",
     "parcel": "^2.16.4"
   }
 }
