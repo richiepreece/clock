@@ -49,7 +49,7 @@ A perspective-mapped cloud tunnel shader carries purple clouds outward from a da
 
 ### Prerequisites
 
-- Node.js
+- Node.js 22.6 or newer (GitHub Actions uses Node.js 24)
 - pnpm
 
 ### Run locally
@@ -67,7 +67,26 @@ Opens at [http://localhost:1234](http://localhost:1234).
 pnpm build
 ```
 
-Outputs static files to the `docs/` directory for GitHub Pages deployment.
+Outputs static files to the ignored `dist/` directory. Do not commit generated files.
+
+### Deployment
+
+Every push to `main` runs `.github/workflows/deploy-pages.yml`, which installs
+dependencies from the frozen pnpm lockfile, runs the tests, builds the site, and
+deploys the resulting artifact to GitHub Pages. No local build or generated-code
+commit is needed. The workflow can also be run manually from `main`.
+
+GitHub Pages must use **GitHub Actions** as its source under **Settings > Pages >
+Build and deployment**, rather than publishing a branch's `docs/` directory.
+The custom domain, `clock.richiepreece.com`, is managed in those Pages settings;
+Actions deployments do not need a `CNAME` file.
+
+Actions are pinned to immutable commits. The build has read-only repository
+access; only the separate deployment job receives Pages write and OIDC
+permissions, using GitHub's short-lived tokens rather than a personal access token.
+Protect `main` and review workflow and dependency changes: automation prevents
+unreviewed build output from being committed, but does not make dependencies or
+source changes inherently safe.
 
 ### Test clock behavior
 

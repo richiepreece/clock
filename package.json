@@ -2,10 +2,11 @@
   "name": "clock",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.34.9",
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build --dist-dir docs",
+    "build": "parcel build --dist-dir dist",
     "test": "node --experimental-strip-types --test src/clockMath.test.ts"
   },
   "dependencies": {
