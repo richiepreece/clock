@@ -5,7 +5,8 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build --dist-dir docs"
+    "build": "parcel build --dist-dir docs",
+    "test": "node --experimental-strip-types --test src/clockMath.test.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "buffer": "^6.0.3",
     "parcel": "^2.14.0"
   }
 }

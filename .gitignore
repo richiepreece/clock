@@ -24,3 +24,6 @@ yarn-error.log*
 
 dist/
 .parcel-cache/
+
+# Local video and image references
+/references/ps2-clock/

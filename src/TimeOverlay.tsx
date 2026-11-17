@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 function getLocaleOverride(): string | undefined {
   const params = new URLSearchParams(window.location.search);
@@ -55,6 +55,7 @@ function SunIcon() {
 
 export function TimeOverlay() {
   const [now, setNow] = useState(new Date());
+  const [showForkLink, setShowForkLink] = useState(true);
   const locale = useMemo(() => getLocaleOverride(), []);
 
   useEffect(() => {
@@ -64,14 +65,9 @@ export function TimeOverlay() {
 
   const dst = isDST(now);
 
-  const forkRef = useRef<HTMLAnchorElement>(null);
-  const restartFade = useCallback(() => {
-    const el = forkRef.current;
-    if (!el) return;
-    el.style.animation = 'none';
-    // Force reflow to restart animation
-    void el.offsetHeight;
-    el.style.animation = '';
+  useEffect(() => {
+    const timeout = setTimeout(() => setShowForkLink(false), 10000);
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
@@ -82,12 +78,10 @@ export function TimeOverlay() {
         {formatTime(now, locale)}
       </div>
       <a
-        ref={forkRef}
-        className="fork-link"
+        className={`fork-link${showForkLink ? ' is-visible' : ''}`}
         href="https://github.com/richiepreece/clock"
         target="_blank"
         rel="noopener noreferrer"
-        onMouseEnter={restartFade}
       >
         Fork me on GitHub
       </a>

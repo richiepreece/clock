@@ -10,6 +10,8 @@ A faithful recreation of the PlayStation 2's iconic system menu clock, built wit
 
 Twelve translucent crystal rods are arranged in a circle like the hours on an analog clock face. The rod corresponding to the current hour glows brighter with a liquid fill effect that drains over the course of the hour — full at the top of the hour, nearly empty just before the next. The entire clock face rotates around the axis of the current hour rod, creating the signature spinning-coin effect of the PS2 clock.
 
+The rods use transmissive, refractive blue glass with purple environment reflections and sharp highlights. The glowing cyan-white liquid has a flat surface. The centered orbs cast light onto the crystals and are refracted through glass in front of them rather than drawn over it. The camera closely frames the rotating clock with minimal padding on both landscape and portrait screens.
+
 ### The Orbs (Seconds & Days of the Week)
 
 Seven orbs continuously fly in a spherical swirling pattern near the center of the clock. The seven orbs represent the seven days of the week.
@@ -32,13 +34,16 @@ At second :00, all orbs converge to the exact position where the hour hand would
 
 The orb positions are entirely determined by the current wall-clock time, so they are always in the correct position — even after a page refresh.
 
+Integer orbital frequencies create the groupings continuously, without snapping between target positions. Tapered blue trails with bright cores and soft halos sample the previous 1.5 seconds of motion, so their length does not depend on frame rate. The trails remain depth-tested and appear refracted through crystals behind which they pass.
+The orbs sweep around once every few seconds, with their orbital planes fanning apart and regrouping rather than sharing a fixed ring.
+
 ### The Orbit Radius (Minutes)
 
-The radius of the orbs' orbit expands throughout each hour. At the top of the hour the orbs swirl tightly near the center; by the end of the hour they sweep a wider arc. This resets when the hour changes.
+The orbit starts at roughly half the radius of the central crystal gap and grows steadily throughout the hour, matching the scale progression in the cached reference video. Its merged position at each minute's :00 gets progressively closer to the next hour's crystal, almost touching its inner tip at the hour change. After that convergence, the orbit contracts over five seconds to its half-gap starting size before beginning the next expansion.
 
 ### The Background
 
-A procedural wormhole tunnel shader creates the signature PS2 depth effect — an infinite passage of swirling purple clouds receding into the distance.
+A perspective-mapped cloud tunnel shader carries purple clouds outward from a dark vanishing point, creating forward motion through the tunnel.
 
 ## Development
 
@@ -64,7 +69,22 @@ pnpm build
 
 Outputs static files to the `docs/` directory for GitHub Pages deployment.
 
+### Test clock behavior
+
+With Node.js 22.6 or newer:
+
+```
+pnpm test
+```
+
+Checks orb groupings, hour-hand alignment, smooth motion, liquid fill timing, and camera framing.
+
 ## References
 
-- [PS2 Clock Rules](https://gamicus.gamepedia.com/PlayStation_2_internal_display_clock)
+- [PS2 Clock Rules](https://gamicus.fandom.com/wiki/PlayStation_2_internal_display_clock)
 - [PS2 Clock Video Reference](https://www.youtube.com/watch?v=LTMOkw-0TfQ)
+
+The full reference video is cached locally at `references/ps2-clock/reference.mp4`.
+`frames/second-00000.jpg` onward samples the full hour once per second;
+`first-minute/frame-00000.jpg` onward samples the first minute at 10 frames per second for motion comparisons.
+Frame numbers start at zero and refer to elapsed video time. These local media files are ignored by Git.
