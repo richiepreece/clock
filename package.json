@@ -10,18 +10,18 @@
     "test": "node --experimental-strip-types --test src/clockMath.test.ts"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.5.0",
-    "@react-three/postprocessing": "^3.0.4",
-    "@types/three": "^0.183.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "@react-three/postprocessing": "^3.2.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "three": "^0.183.2"
   },
   "devDependencies": {
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.183.1",
     "buffer": "^6.0.3",
-    "parcel": "^2.14.0"
+    "parcel": "^2.16.4"
   }
 }

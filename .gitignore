@@ -2,29 +2,24 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
 
 # testing
 /coverage
 
 # production
-/build
-/docs/
+/dist/
+/.parcel-cache/
 
 # misc
 .DS_Store
+.claude/
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-dist/
-.parcel-cache/
+*-debug.log*
+*-error.log*
 
 # Local video and image references
 /references/ps2-clock/

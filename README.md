@@ -84,9 +84,8 @@ Actions deployments do not need a `CNAME` file.
 Actions are pinned to immutable commits. The build has read-only repository
 access; only the separate deployment job receives Pages write and OIDC
 permissions, using GitHub's short-lived tokens rather than a personal access token.
-Protect `main` and review workflow and dependency changes: automation prevents
-unreviewed build output from being committed, but does not make dependencies or
-source changes inherently safe.
+Protect `main` and review workflow and dependency changes: keeping generated files
+out of source control does not make dependencies or source changes inherently safe.
 
 ### Test clock behavior
 
