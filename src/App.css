@@ -17,6 +17,11 @@ html, body, #app {
   height: 100vh;
 }
 
+.clock-container canvas {
+  width: 100%;
+  height: 100%;
+}
+
 .time-overlay {
   position: absolute;
   top: 0;
