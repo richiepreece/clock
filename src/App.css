@@ -74,3 +74,51 @@ html, body, #app {
 .fork-link:focus-visible {
   opacity: 1;
 }
+
+.pop-out-button {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  padding: 8px 12px;
+  border: 1px solid #606078;
+  border-radius: 6px;
+  background: #100820;
+  color: #e0e0ec;
+  cursor: pointer;
+}
+
+.pop-out-button:disabled {
+  cursor: wait;
+}
+
+.pop-out-button:focus-visible,
+.pop-out-placeholder button:focus-visible {
+  outline: 2px solid #b5e7ff;
+  outline-offset: 3px;
+}
+
+.pop-out-placeholder {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  height: 100vh;
+  padding: 24px;
+  color: #e0e0ec;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.pop-out-placeholder button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.pop-out-error {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  right: 20px;
+  color: #e0e0ec;
+  font-family: Arial, Helvetica, sans-serif;
+}
